@@ -125,7 +125,7 @@ def process_reviews_with_sentiment(file_path, lexicon):
 # Load the VADER lexicon from the file
 vader_lexicon = load_vader_lexicon('vader_lexicon.txt')
 
-# Replace this with the path to your input file
+# Replace this with the path to input file
 file_path = 'E:/big data/Books_rating.csv'
 
 # Get the books with their normalized sentiment scores
