@@ -2,13 +2,16 @@
 
 import sys
 
+# Initialize variables to keep track of the current book title, total score, count of scores, and sentiment label
 current_title = None
 current_total_score = 0
 current_count = 0
 sentiment_label = None
 
+# Initialize a list to store book data (title, average score, sentiment label)
 books = []
 
+# Process the input line by line
 for line in sys.stdin:
     try:
         title, score, sentiment = line.strip().split('\t')
