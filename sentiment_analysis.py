@@ -56,8 +56,8 @@ with open('vader_lexicon.txt', 'w') as file:
 def load_vader_lexicon(file_path):
     vader_lexicon = {}
     with open(file_path, 'r') as f:
-        for line in f:
-            parts = line.strip().split(':')
+        for line in f:  # Iterate over each line in the file
+            parts = line.strip().split(':')  # Strip the line and then split it
             if len(parts) == 2:
                 word, score = parts
                 vader_lexicon[word.strip()] = float(score)
@@ -87,6 +87,15 @@ def normalize_score(score):
     # Assuming VADER scores range from -4 to 4 based on typical usage
     return (score + 4) / 8
 
+# Function to label the sentiment based on the score
+def label_sentiment(score):
+    if score > 0.6:
+        return "Positive"
+    elif score < 0.4:
+        return "Negative"
+    else:
+        return "Neutral"
+
 # Function to process and calculate sentiment for each review
 def process_reviews_with_sentiment(file_path, lexicon):
     book_scores = defaultdict(list)
@@ -114,11 +123,12 @@ def process_reviews_with_sentiment(file_path, lexicon):
                         # Store the score under the respective book title
                         book_scores[title].append(sentiment_score)
 
-    # Calculate average sentiment score for each book
+    # Calculate average sentiment score for each book and label it
     book_avg_scores = [(title, sum(scores) / len(scores)) for title, scores in book_scores.items()]
+    book_avg_scores_with_labels = [(title, score, label_sentiment(score)) for title, score in book_avg_scores]
 
     # Sort books by average sentiment score in descending order
-    books_sorted = sorted(book_avg_scores, key=lambda x: x[1], reverse=True)
+    books_sorted = sorted(book_avg_scores_with_labels, key=lambda x: x[1], reverse=True)
 
     return books_sorted
 
@@ -128,12 +138,12 @@ vader_lexicon = load_vader_lexicon('vader_lexicon.txt')
 # Replace this with the path to input file
 file_path = 'E:/big data/Books_rating.csv'
 
-# Get the books with their normalized sentiment scores
+# Get the books with their normalized sentiment scores and labels
 books_with_sentiment = process_reviews_with_sentiment(file_path, vader_lexicon)
 
 # Display the top 10 books with highest sentiment scores
 print("\nTop 10 books with highest sentiment scores:")
-print(f"{'Title':<60} {'Sentiment Score':<20}")
-print("-" * 80)
+print(f"{'Title':<60} {'Sentiment Score':<20} {'Sentiment Label':<20}")
+print("-" * 100)
 for book in books_with_sentiment[:10]:
-    print(f"{book[0]:<60} {book[1]:<20.4f}")
+    print(f"{book[0]:<60} {book[1]:<20.4f} {book[2]:<20}")
