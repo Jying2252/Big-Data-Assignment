@@ -18,6 +18,7 @@ def remove_stopwords(tokens):
     """Remove stopwords from the token list."""
     return [word for word in tokens if word.lower() not in stopwords]
 
+# Reads from input line by line
 for line in sys.stdin:
     fields = line.strip().split(',')
     if len(fields) >= 10:
